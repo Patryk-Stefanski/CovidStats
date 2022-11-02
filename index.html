@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<main>
+    <div>
+        <h2 href="/">Home</h2>
+    </div>
+    <div class="intro">
+        <h1>Covid Stats</h1>
+        <p>Web Application for Tracking Covid Related Statistics Worldwide and by Country.</p>
+    </div>
+    <div>
+        <label>Choose Historical Date:
+            <input name="chosen-date" type="date" id="chosen-date">
+        </label>
+    </div>
+    <div>
+        <label for="chosen-country">Choose a country:</label>
+        <select id="chosen-country">
+            <option  value="All">All</option>
+            {{ range.Results.Countries }}
+            <option  value={{ . }}>{{ . }}</option>
+            {{ end }}
+        </select>
+    </div>
+    <div class="Stats Selection">
+        <a href="search?country=USA&date=2020-06-02" class="button next-page">search</a>
+        <!--                <form action="/searchLive">-->
+<!--            <input type="submit" value="Search Live Statistics"/>-->
+<!--        </form>-->
+<!--        <form action="/search?country=USA&date=2020-02-03">-->
+<!--            <input type="submit" value="Historical Statistics"/>-->
+<!--        </form>-->
+    </div>
+</main>
