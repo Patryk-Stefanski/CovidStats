@@ -61,8 +61,6 @@ func (c *Client) GetHistoricalStats(country, date string) (*StatResults, error) 
 		return nil, err
 	}
 
-	fmt.Println(string(body))
-
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf(string(body))
 	}
@@ -72,7 +70,7 @@ func (c *Client) GetHistoricalStats(country, date string) (*StatResults, error) 
 }
 
 func (c *Client) GetLiveStats(country string) (*StatResults, error) {
-	url := fmt.Sprintf("https://covid-193.p.rapidapi.com/history?country=%s", country)
+	url := fmt.Sprintf("https://covid-193.p.rapidapi.com/statistics?country=%s", country)
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -126,7 +124,8 @@ type Cases struct {
 }
 
 type Deaths struct {
-	Total int `json:"total"`
+	New   string `json:"new"`
+	Total int    `json:"total"`
 }
 
 type Tests struct {

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<main>
+    <div>
+        <a href="/">Home</a>
+    </div>
+    <div class="intro">
+        <h1>Covid Stats</h1>
+    </div>
+    <div>
+        <label for="country">Country:</label>
+        <textarea id="country" rows="1" cols="15">{{ .Country }}</textarea>
+        <label for="date">Date:</label>
+        <textarea id="date" rows="1" cols="15">{{ .Date }}</textarea>
+        <label for="population">Population:</label>
+        <textarea id="population" rows="1" cols="15">{{ .Population }}</textarea>
+        <label for="new-cases">New cases:</label>
+        <textarea id="new-cases" rows="1" cols="15">{{ .NewCases }}</textarea>
+        <label for="total-cases">Total cases:</label>
+        <textarea id="total-cases" rows="1" cols="15">{{ .TotalCases }}</textarea>
+        <label for="active-cases">Active cases:</label>
+        <textarea id="active-cases" rows="1" cols="15">{{ .ActiveCases }}</textarea>
+        <label for="critical-cases">Critical cases:</label>
+        <textarea id="critical-cases" rows="1" cols="15">{{ .CriticalCases }}</textarea>
+        <label for="recovered-cases">Recovered cases:</label>
+        <textarea id="recovered-cases" rows="1" cols="15">{{ .RecoveredCases }}</textarea>
+        <label for="new-deaths">New deaths:</label>
+        <textarea id="new-deaths" rows="1" cols="15">{{ .NewDeaths }}</textarea>
+        <label for="total-deaths">Total deaths:</label>
+        <textarea id="total-deaths" rows="1" cols="15">{{ .TotalDeaths }}</textarea>
+        <label for="total-tests">Total test:</label>
+        <textarea id="total-tests" rows="1" cols="15">{{ .TotalTests }}</textarea>
+    </div>
+</main>

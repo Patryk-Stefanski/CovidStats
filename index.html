@@ -10,25 +10,38 @@
     </div>
     <div>
         <label>Choose Historical Date:
-            <input name="chosen-date" type="date" id="chosen-date">
+            <input name="chosen-date" type="date" id="chosen-date" value={{.ChosenDate}}>
         </label>
     </div>
     <div>
         <label for="chosen-country">Choose a country:</label>
-        <select id="chosen-country">
-            <option  value="All">All</option>
+        <select name="country" id="chosen-country">
+            <option value={{.}}>All</option>
             {{ range.Results.Countries }}
-            <option  value={{ . }}>{{ . }}</option>
+            <option  value={{.}}>{{ . }}</option>
             {{ end }}
         </select>
     </div>
     <div class="Stats Selection">
-        <a href="search?country=USA&date=2020-06-02" class="button next-page">search</a>
-        <!--                <form action="/searchLive">-->
-<!--            <input type="submit" value="Search Live Statistics"/>-->
-<!--        </form>-->
-<!--        <form action="/search?country=USA&date=2020-02-03">-->
-<!--            <input type="submit" value="Historical Statistics"/>-->
-<!--        </form>-->
+        <form id="live-stats" onclick="myFunction2()" method="post">
+            <input type="submit" value="Live Stats"  />
+        </form>
+        <form id="historical-stats" onclick="myFunction()" method="post">
+            <input type="submit" value="Historical Stats"  />
+        </form>
     </div>
 </main>
+
+<script>
+    function myFunction() {
+        var e = document.getElementById("chosen-country");
+        var country = e.options[e.selectedIndex].text
+        var date = document.getElementById("chosen-date").value;
+        document.getElementById("historical-stats").setAttribute(`action` , `searchHistorical?country=${country}&date=${date}`)
+    }
+    function myFunction2() {
+        var e = document.getElementById("chosen-country");
+        var text = e.options[e.selectedIndex].text
+        document.getElementById("live-stats").setAttribute('action' , `/searchLive?country=${text}`)
+    }
+</script>
