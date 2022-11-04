@@ -29,11 +29,8 @@
         </select>
     </div>
     <div >
-        <form id="live-stats" onclick="myFunction2()" method="post" class="alignButtons">
-            <input type="submit" value="Live Stats"  />
-        </form>
-        <form id="historical-stats" onclick="myFunction()" method="post" class="alignButtons">
-            <input type="submit" value="Historical Stats"  />
+        <form id="retrieve-stats" onclick="myFunction()" method="post" class="alignButtons">
+            <input type="submit" value="Retrieve Stats"  />
         </form>
     </div>
     </div>
@@ -48,11 +45,12 @@
         var e = document.getElementById("chosen-country");
         var country = e.options[e.selectedIndex].text
         var date = document.getElementById("chosen-date").value;
-        document.getElementById("historical-stats").setAttribute(`action` , `searchHistorical?country=${country}&date=${date}`)
-    }
-    function myFunction2() {
-        var e = document.getElementById("chosen-country");
-        var text = e.options[e.selectedIndex].text
-        document.getElementById("live-stats").setAttribute('action' , `/searchLive?country=${text}`)
+
+        if (date === new Date().toISOString().split("T")[0] ) {
+            document.getElementById("retrieve-stats").setAttribute('action' , `/searchLive?country=${country}`)
+        }
+        if (date !== new Date().toISOString().split("T")[0]) {
+            document.getElementById("retrieve-stats").setAttribute(`action` , `/searchHistorical?country=${country}&date=${date}`)
+        }
     }
 </script>
