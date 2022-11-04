@@ -1,13 +1,19 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta charset="UTF-8">
-<main>
-    <div>
-        <h2 href="/">Home</h2>
+<meta content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/assets/styles.css">
+<div class="header">
+    <a class="logo">Covid Statistics Tracker</a>
+    <div class="header-right">
+        <a class="active" href="/">Home</a>
     </div>
+</div>
+<main>
     <div class="intro">
-        <h1>Covid Stats</h1>
         <p>Web Application for Tracking Covid Related Statistics Worldwide and by Country.</p>
     </div>
+    <div class="container">
     <div>
         <label>Choose Historical Date:
             <input name="chosen-date" type="date" id="chosen-date" value={{.ChosenDate}}>
@@ -22,17 +28,22 @@
             {{ end }}
         </select>
     </div>
-    <div class="Stats Selection">
-        <form id="live-stats" onclick="myFunction2()" method="post">
+    <div >
+        <form id="live-stats" onclick="myFunction2()" method="post" class="alignButtons">
             <input type="submit" value="Live Stats"  />
         </form>
-        <form id="historical-stats" onclick="myFunction()" method="post">
+        <form id="historical-stats" onclick="myFunction()" method="post" class="alignButtons">
             <input type="submit" value="Historical Stats"  />
         </form>
+    </div>
     </div>
 </main>
 
 <script>
+    datePicker = document.getElementById("chosen-date")
+    datePicker.setAttribute("max" , new Date().toISOString().split("T")[0])
+    datePicker.setAttribute("value" , new Date().toISOString().split("T")[0])
+
     function myFunction() {
         var e = document.getElementById("chosen-country");
         var country = e.options[e.selectedIndex].text

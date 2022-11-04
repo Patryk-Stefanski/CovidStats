@@ -34,12 +34,13 @@ func main() {
 	myClient := &http.Client{Timeout: 10 * time.Second}
 	statsApi := client.NewClient(myClient, apiKey)
 
+	fs := http.FileServer(http.Dir("assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.HandleFunc("/", indexHandler(statsApi))
-
 	http.HandleFunc("/searchHistorical", HandleHistorical(statsApi))
 	http.HandleFunc("/searchLive", HandleLive(statsApi))
 
-	err = http.ListenAndServe(":3000", nil)
+	err = http.ListenAndServe(":"+port, nil)
 }
 
 type Search struct {

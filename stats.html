@@ -1,34 +1,58 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta charset="UTF-8">
-<main>
-    <div>
-        <a href="/">Home</a>
+<link rel="stylesheet" href="/assets/styles.css">
+<div class="header">
+    <a class="logo">Covid Statistics Tracker</a>
+    <div class="header-right">
+        <a class="active" href="/">Home</a>
     </div>
-    <div class="intro">
-        <h1>Covid Stats</h1>
-    </div>
-    <div>
+</div>
+<main >
+    <div class="container">
+        <div class="presentStats">
         <label for="country">Country:</label>
         <textarea id="country" rows="1" cols="15">{{ .Country }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="date">Date:</label>
         <textarea id="date" rows="1" cols="15">{{ .Date }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="population">Population:</label>
         <textarea id="population" rows="1" cols="15">{{ .Population }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="new-cases">New cases:</label>
         <textarea id="new-cases" rows="1" cols="15">{{ .NewCases }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="total-cases">Total cases:</label>
         <textarea id="total-cases" rows="1" cols="15">{{ .TotalCases }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="active-cases">Active cases:</label>
         <textarea id="active-cases" rows="1" cols="15">{{ .ActiveCases }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="critical-cases">Critical cases:</label>
         <textarea id="critical-cases" rows="1" cols="15">{{ .CriticalCases }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="recovered-cases">Recovered cases:</label>
         <textarea id="recovered-cases" rows="1" cols="15">{{ .RecoveredCases }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="new-deaths">New deaths:</label>
         <textarea id="new-deaths" rows="1" cols="15">{{ .NewDeaths }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="total-deaths">Total deaths:</label>
         <textarea id="total-deaths" rows="1" cols="15">{{ .TotalDeaths }}</textarea>
+        </div>
+        <div class="presentStats">
         <label for="total-tests">Total test:</label>
         <textarea id="total-tests" rows="1" cols="15">{{ .TotalTests }}</textarea>
+        </div>
     </div>
 </main>
