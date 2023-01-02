@@ -13,13 +13,13 @@ import (
 	"time"
 )
 
-var templates = template.Must(template.ParseFiles("index.html"))
-var templates2 = template.Must(template.ParseFiles("stats.html"))
+var templates = template.Must(template.ParseFiles("web/views/index.html"))
+var templates2 = template.Must(template.ParseFiles("web/views/stats.html"))
 
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env file")
+		log.Println("Warning: Failed to load .env file")
 	}
 
 	port := os.Getenv("PORT")
@@ -28,14 +28,15 @@ func main() {
 	}
 
 	apiKey := os.Getenv("COVID_STATS_API_KEY")
-	if apiKey == "" {
-		log.Fatal("Env: apiKey must be set")
-	}
+	//if apiKey == "" {
+	//	log.Fatal("Env: apiKey must be set")
+	//}
+
 	myClient := &http.Client{Timeout: 10 * time.Second}
 	statsApi := client.NewClient(myClient, apiKey)
 
-	fs := http.FileServer(http.Dir("assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	fs := http.FileServer(http.Dir("web/assets"))
+	http.Handle("/web/assets/", http.StripPrefix("/web/assets/", fs))
 	http.HandleFunc("/", indexHandler(statsApi))
 	http.HandleFunc("/searchHistorical", HandleHistorical(statsApi))
 	http.HandleFunc("/searchLive", HandleLive(statsApi))
