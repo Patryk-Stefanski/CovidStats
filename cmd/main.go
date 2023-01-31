@@ -74,8 +74,12 @@ func indexHandler(statsApi *client.Client) http.HandlerFunc {
 
 		_, err = buf.WriteTo(w)
 		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		w.WriteHeader(http.StatusOK)
+		return
 	}
 }
 
@@ -124,8 +128,12 @@ func HandleLive(statsApi *client.Client) http.HandlerFunc {
 
 			_, err = buf.WriteTo(w)
 			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			w.WriteHeader(http.StatusOK)
+			return
 		}
 	}
 }
@@ -227,8 +235,12 @@ func HandleHistorical(statsApi *client.Client) http.HandlerFunc {
 
 			_, err = buf.WriteTo(w)
 			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			w.WriteHeader(http.StatusOK)
+			return
 		}
 	}
 }
