@@ -9,12 +9,29 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
 
-var templates = template.Must(template.ParseFiles("web/views/index.html"))
-var templates2 = template.Must(template.ParseFiles("web/views/stats.html"))
+func getPath() (*template.Template, *template.Template) {
+	var environment = os.Getenv("ENVIRONMENT")
+
+	var indexFilePath, statsFilePath string
+
+	if environment == "test" {
+		indexFilePath, _ = filepath.Abs("../web/views/index.html")
+		statsFilePath, _ = filepath.Abs("../web/views/stats.html")
+	} else {
+		indexFilePath, _ = filepath.Abs("web/views/index.html")
+		statsFilePath, _ = filepath.Abs("web/views/stats.html")
+	}
+
+	var templates = template.Must(template.ParseFiles(indexFilePath))
+	var templates2 = template.Must(template.ParseFiles(statsFilePath))
+
+	return templates, templates2
+}
 
 func main() {
 	err := godotenv.Load()
@@ -42,6 +59,9 @@ func main() {
 	http.HandleFunc("/searchLive", HandleLive(statsApi))
 
 	err = http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 type Search struct {
@@ -53,6 +73,15 @@ type Search struct {
 func indexHandler(statsApi *client.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		buf := &bytes.Buffer{}
+
+		apiKey := os.Getenv("COVID_STATS_API_KEY")
+
+		if apiKey == "" {
+			http.Error(w, "Invalid Api Key", http.StatusForbidden)
+			return
+		}
+
+		templates, _ := getPath()
 
 		results, err := statsApi.GetCountries()
 		if err != nil {
@@ -86,6 +115,14 @@ func indexHandler(statsApi *client.Client) http.HandlerFunc {
 func HandleLive(statsApi *client.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		buf := &bytes.Buffer{}
+
+		apiKey := os.Getenv("COVID_STATS_API_KEY")
+
+		if apiKey == "" {
+			http.Error(w, "Invalid Api Key", http.StatusForbidden)
+		}
+
+		_, templates2 := getPath()
 
 		u, err := url.Parse(r.URL.String())
 		if err != nil {
@@ -162,6 +199,15 @@ func HandleHistorical(statsApi *client.Client) http.HandlerFunc {
 		var population, totalCases, newCasesTotal, activeCases, criticalCases, recoveredCases, totalDeaths, totalTests, newDeathsTotal = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 		buf := &bytes.Buffer{}
+
+		apiKey := os.Getenv("COVID_STATS_API_KEY")
+
+		if apiKey == "" {
+			http.Error(w, "Invalid Api Key", http.StatusForbidden)
+			return
+		}
+
+		_, templates2 := getPath()
 
 		u, err := url.Parse(r.URL.String())
 		if err != nil {
