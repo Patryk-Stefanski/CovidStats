@@ -11,7 +11,7 @@ jobs:
           command: go get ./...
       - run:
           name: Run tests
-          command: go test -v
+          command: cd cmd &&  go test -v
 
 
 workflows:
