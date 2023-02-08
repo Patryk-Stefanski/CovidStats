@@ -21,4 +21,6 @@ jobs:
         run: go build -v ./...
 
       - name: Test
+        env:
+          COVID_STATS_API_KEY: ${{ secrets.COVID_STATS_API_KEY }}
         run: go test -v ./...
