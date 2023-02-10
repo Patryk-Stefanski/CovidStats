@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  COMMIT_SHA = ${{ github.sha }}
+
 jobs:
 
   push_to_registry:
@@ -22,9 +25,7 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
-        env:
-          COMMIT_SHA = ${{ github.sha }}
         with:
           context: .
           push: true
-          tags: pstefans/covidstats:latest
+          tags: pstefans/covidstats:"COMMIT_SHA"
