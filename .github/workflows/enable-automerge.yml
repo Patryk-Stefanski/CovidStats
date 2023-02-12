@@ -1,8 +1,9 @@
 name: automerge
 on:
+  pull_request:
+    branches: [ "master" ]
   workflow_run:
     workflows: [Run Tests, Build Image]
-    types: [completed]
 
 jobs:
   add-labels:
