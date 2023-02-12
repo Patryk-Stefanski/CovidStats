@@ -2,17 +2,14 @@ name: Build and Push Image
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
 
 env:
-  COMMIT_SHA: ${{ github.sha }}
+  COMMIT_SHA: ${{github.sha}}
 
 jobs:
-
   push_to_registry:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
