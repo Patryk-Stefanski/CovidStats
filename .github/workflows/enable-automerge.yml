@@ -1,7 +1,7 @@
 name: automerge
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   add-labels:
@@ -21,4 +21,4 @@ jobs:
         name: automerge
         uses: "pascalgn/automerge-action@v0.15.5"
         env:
-          GITHUB_TOKEN: "${{ secrets.ACCOUNT_TOKEN }}"
+          GITHUB_TOKEN: "${{secrets.ACCOUNT_TOKEN}}"
