@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -45,9 +46,6 @@ func main() {
 	}
 
 	apiKey := os.Getenv("COVID_STATS_API_KEY")
-	//if apiKey == "" {
-	//	log.Fatal("Env: apiKey must be set")
-	//}
 
 	myClient := &http.Client{Timeout: 10 * time.Second}
 	statsApi := client.NewClient(myClient, apiKey)
@@ -74,18 +72,16 @@ func indexHandler(statsApi *client.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		buf := &bytes.Buffer{}
 
-		apiKey := os.Getenv("COVID_STATS_API_KEY")
-
-		if apiKey == "" {
-			http.Error(w, "Invalid Api Key", http.StatusForbidden)
-			return
-		}
-
 		templates, _ := getPath()
 
 		results, err := statsApi.GetCountries()
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			if strings.Contains(err.Error(), "Invalid API key") {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
 
@@ -116,12 +112,6 @@ func HandleLive(statsApi *client.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		buf := &bytes.Buffer{}
 
-		apiKey := os.Getenv("COVID_STATS_API_KEY")
-
-		if apiKey == "" {
-			http.Error(w, "Invalid Api Key", http.StatusForbidden)
-		}
-
 		_, templates2 := getPath()
 
 		u, err := url.Parse(r.URL.String())
@@ -136,7 +126,12 @@ func HandleLive(statsApi *client.Client) http.HandlerFunc {
 		if searchQuery != "" {
 			results, err := statsApi.GetLiveStats(searchQuery)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				if strings.Contains(err.Error(), "Invalid API key") {
+					http.Error(w, err.Error(), http.StatusBadRequest)
+					return
+				}
+
+				http.Error(w, err.Error(), http.StatusNotFound)
 				return
 			}
 
@@ -200,13 +195,6 @@ func HandleHistorical(statsApi *client.Client) http.HandlerFunc {
 
 		buf := &bytes.Buffer{}
 
-		apiKey := os.Getenv("COVID_STATS_API_KEY")
-
-		if apiKey == "" {
-			http.Error(w, "Invalid Api Key", http.StatusForbidden)
-			return
-		}
-
 		_, templates2 := getPath()
 
 		u, err := url.Parse(r.URL.String())
@@ -222,7 +210,12 @@ func HandleHistorical(statsApi *client.Client) http.HandlerFunc {
 		if searchQuery != "" && searchDate != "" {
 			results, err := statsApi.GetHistoricalStats(searchQuery, searchDate)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				if strings.Contains(err.Error(), "Invalid API key") {
+					http.Error(w, err.Error(), http.StatusBadRequest)
+					return
+				}
+
+				http.Error(w, err.Error(), http.StatusNotFound)
 				return
 			}
 
