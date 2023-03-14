@@ -23,3 +23,17 @@ jobs:
           context: .
           push: true
           tags: pstefans/covidstats:${{github.sha}}
+
+  notify_helm_repo:
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: Patryk-Stefanski/CovidStatsHelmCharts
+          event-type: new-image-tag
+          client-payload: '{"ref": "${{ github.ref }}",
+                            "sha": "${{ github.sha }}"
+                            }'
